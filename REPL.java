@@ -1,15 +1,11 @@
 
 public class REPL{
-    private int[] registers;
-    private final LinkedList<Line> lines;
+    private final int[] registers;
+    private final LinkedList lines;
     
-    public REPL(int[] registers){
-        this.registers = registers;
-        this.lines = new LinkedList<>();
-    }
-    public REPL(){
+    public REPL(LinkedList lines){
         this.registers = new int[26];
-        this.lines = new LinkedList<>();
+        this.lines = lines;
     }
     
     // read and validate the sentence
@@ -23,24 +19,24 @@ public class REPL{
         if (words.length == 3 && words[2].matches("[a-z]")){
             String[] vars = new String[1];
             vars[0] = words[2];
-            newLine(Integer.parseInt(words[0]), words[1], vars);
+            newLine(Integer.parseInt(words[0]), words[1], vars, Integer.parseInt(words[0]));
             selectInstruction(words[1], words[2], "");
         } else if (words.length == 4 && words[2].matches("[a-z]") && words[3].matches("[0-9]+") || words[3].matches("[a-z]")){
             String[] vars = new String[2];
             vars[0] = words[2];
             vars[1] = words[3];
-            newLine(Integer.parseInt(words[0]), words[1], vars);
+            newLine(Integer.parseInt(words[0]), words[1], vars, Integer.parseInt(words[0]));
             selectInstruction(words[1], words[2], words[3]);
         } else {
             System.err.println("Error: not allowed");
         }
 
     }
-    public LinkedList<Line> getLines(){
+    public LinkedList getLines(){
         return this.lines;
     }
-    public void newLine(int line, String instruction, String[] vars){
-        this.lines.add(new Line(line, instruction, vars));
+    public void newLine(int line, String instruction, String[] vars, int index){
+        System.out.println(this.lines.addByIndex(new Line(line, instruction, vars), index));
     }
 
     private boolean selectInstruction(String instruction, String x, String y){
