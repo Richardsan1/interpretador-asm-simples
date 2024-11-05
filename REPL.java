@@ -2,24 +2,20 @@
 import java.util.Scanner;
 
 public class REPL{
-    private final int[] registers;
-    private final LinkedList<Line> lines;
+    private int[] registers;
+    private LinkedList<Line> lines;
     
+    public REPL(int[] registers){
+        this.registers = registers;
+        this.lines = null;
+    }
     public REPL(){
         this.registers = new int[26];
         this.lines = null;
     }
     
-    public void run(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.print("> ");
-            validate(scan.next());
-        }
-    } 
-    
     // read and validate the sentence
-    private void validate(String sentence){
+    public void validate(String sentence){
         String[] words = sentence.toLowerCase().split("\\s+");
 
         if(!words[0].matches("[0-9]+")){
@@ -41,6 +37,12 @@ public class REPL{
             System.err.println("Error: not allowed");
         }
 
+    }
+    public LinkedList<Line> getLines(){
+        return this.lines;
+    }
+    public void newLine(int line, String instruction, String[] vars){
+        this.lines.add(new Line(line, instruction, vars));
     }
 
     private boolean selectInstruction(String instruction, String x, String y){
@@ -101,7 +103,7 @@ public class REPL{
         this.registers[x.charAt(0)] /= this.registers[y.charAt(0)];
     }
     private void jnz(String x, String y){
-        System.err.println("TODO: implement function");
+        System.out.println("todo: implement jnz");
     }
     private void out(String x){
         System.out.println(this.registers[x.charAt(0)]);
