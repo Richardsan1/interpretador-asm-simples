@@ -1,17 +1,15 @@
 
-import java.util.Scanner;
-
 public class REPL{
     private int[] registers;
-    private LinkedList<Line> lines;
+    private final LinkedList<Line> lines;
     
     public REPL(int[] registers){
         this.registers = registers;
-        this.lines = null;
+        this.lines = new LinkedList<>();
     }
     public REPL(){
         this.registers = new int[26];
-        this.lines = null;
+        this.lines = new LinkedList<>();
     }
     
     // read and validate the sentence
@@ -25,13 +23,13 @@ public class REPL{
         if (words.length == 3 && words[2].matches("[a-z]")){
             String[] vars = new String[1];
             vars[0] = words[2];
-            lines.add(new Line(Integer.parseInt(words[0]), words[1], vars));
+            newLine(Integer.parseInt(words[0]), words[1], vars);
             selectInstruction(words[1], words[2], "");
         } else if (words.length == 4 && words[2].matches("[a-z]") && words[3].matches("[0-9]+") || words[3].matches("[a-z]")){
             String[] vars = new String[2];
             vars[0] = words[2];
             vars[1] = words[3];
-            lines.add(new Line(Integer.parseInt(words[0]), words[1], vars));
+            newLine(Integer.parseInt(words[0]), words[1], vars);
             selectInstruction(words[1], words[2], words[3]);
         } else {
             System.err.println("Error: not allowed");
@@ -82,30 +80,33 @@ public class REPL{
         return false;
     }
     private void mov(String x, String y){
-        this.registers[x.charAt(0)] = Integer.parseInt(y);
+        int value = Integer.parseInt(y);
+        this.registers[x.charAt(0) - 97] = value;
+        System.out.println(this.registers[x.charAt(0) - 97]);
     }
     private void inc(String x){
-        this.registers[x.charAt(0)] += 1;
+        this.registers[x.charAt(0)-97] += 1;
     }
     private void dec(String x){
-        this.registers[x.charAt(0)] -= 1;
+        this.registers[x.charAt(0)-97] -= 1;
     }
     private void add(String x, String y){
-        this.registers[x.charAt(0)] += this.registers[y.charAt(0)];
+        this.registers[x.charAt(0)-97] += this.registers[y.charAt(0)-97];
+        System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
     private void sub(String x, String y){
-        this.registers[x.charAt(0)] -= this.registers[y.charAt(0)];
+        this.registers[x.charAt(0)-97] -= this.registers[y.charAt(0)-97];
     }
     private void mul(String x, String y){
-        this.registers[x.charAt(0)] *= this.registers[y.charAt(0)];
+        this.registers[x.charAt(0)-97] *= this.registers[y.charAt(0)-97];
     }
     private void div(String x, String y){
-        this.registers[x.charAt(0)] /= this.registers[y.charAt(0)];
+        this.registers[x.charAt(0)-97] /= this.registers[y.charAt(0)-97];
     }
     private void jnz(String x, String y){
         System.out.println("todo: implement jnz");
     }
     private void out(String x){
-        System.out.println(this.registers[x.charAt(0)]);
+        System.out.println(this.registers[x.charAt(0)-97]);
     }
 }
