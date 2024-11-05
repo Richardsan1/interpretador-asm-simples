@@ -1,54 +1,75 @@
 // não sei se vai ser necessário essa class, ou se ela está pronta, mas vai que
-public class LinkedList<T>{
+public class LinkedList{
     private int size;
-    private Node<T> firstNode;
-    private Node<T> lastNode;
+    private Node<Line> firstNode;
+    private Node<Line> lastNode;
 
     public LinkedList(){
-        this.size = -1;
+        this.size = 0;
         this.firstNode = null;
     }
 
     public int getSize(){
         return this.size;
     }
-    public Node<T> getFirstNode(){
+    public Node<Line> getFirstNode(){
         return this.firstNode;
     }
 
-    public void add(T data){
+    public void add(Line data){
         if(this.firstNode == null){
             this.firstNode = new Node<>(data);
             this.lastNode = this.firstNode;
             this.size++;
         }else{
-            Node<T> newNode = new Node<>(data);
+            Node<Line> newNode = new Node<>(data);
             this.lastNode.setNext(newNode);
             this.lastNode = newNode;
             this.size++;
         }
     }
+    public String addByIndex(Line data, int index){
+        Node<Line> dummy = this.firstNode;
+        for(int i = 0; i <= size; i++){
+            if(dummy == null || dummy.getNext() == null){
+                add(data);
+                return "Nova linha adicionada";
+            }
+            else if (dummy.getNext().getData().getId() == index) {
+                Node<Line> newNode = new Node<>(data);
+                newNode.setNext(dummy.getNext().getNext());
+                dummy.setNext(newNode);
+                return "Linha alterada";
+            }
 
-    public void remove(int index){
+            dummy = dummy.getNext();
+        }
+        return "Error";
+    }
+
+    public void removeByIndex(int index){
         // index starts at 0
-        if(index > size || index < 0) return;
+        if(index >= size || index < 0) return;
         if(index == 0){
             this.firstNode = this.firstNode.getNext();
             return;
         }
         
-        Node<T> dummy = this.firstNode;
+        Node<Line> dummy = this.firstNode;
         for(int i = 0; i < index-1; i++){
             dummy = dummy.getNext();
         }
         dummy.setNext(dummy.getNext().getNext());
         this.size--;
     }
+    public void removeByLine(int index){
+        // todo: implement
+    }
 
     @Override
     public String toString() {
     StringBuilder sb = new StringBuilder();
-    Node<T> current = this.firstNode;
+    Node<Line> current = this.firstNode;
     while (current != null) {
         sb.append(current.getData());
         if (current.getNext() != null) {
