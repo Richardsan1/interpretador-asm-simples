@@ -1,16 +1,16 @@
 public class Line{
-    private final int num;
+    private final int id;
     private final String instruction;
     private final String[] vars;
     
     public Line(int line, String instruction, String[] vars){
-        this.num = line;
+        this.id = line;
         this.instruction = instruction;
         this.vars = vars;
     }
     
-    public int getNum(){
-        return this.num;
+    public int getId(){
+        return this.id;
     }
     
     public String getInstruction(){
