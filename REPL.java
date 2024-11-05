@@ -103,7 +103,7 @@ public class REPL{
         this.registers[x.charAt(0)] /= this.registers[y.charAt(0)];
     }
     private void jnz(String x, String y){
-        
+        System.out.println("todo: implement jnz");
     }
     private void out(String x){
         System.out.println(this.registers[x.charAt(0)]);
