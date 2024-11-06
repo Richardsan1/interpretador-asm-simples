@@ -18,6 +18,9 @@ public class Main {
                 case "ins" -> {
                     repl.validateNWrite(String.join(" ", Arrays.copyOfRange(input, 1, input.length)));
                 }
+                case "run" -> {
+                    repl.run();
+                }
                 case "exit" ->{
                     break principal;
                 }
