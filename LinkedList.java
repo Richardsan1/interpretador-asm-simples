@@ -2,7 +2,6 @@
 public class LinkedList{
     private int size;
     private Node<Line> firstNode;
-    private Node<Line> lastNode;
 
     public LinkedList(){
         this.size = 0;
@@ -16,18 +15,6 @@ public class LinkedList{
         return this.firstNode;
     }
 
-    private void add(Line data){
-        if(this.firstNode == null){
-            this.firstNode = new Node<>(data);
-            this.lastNode = this.firstNode;
-            this.size++;
-        }else{
-            Node<Line> newNode = new Node<>(data);
-            this.lastNode.setNext(newNode);
-            this.lastNode = newNode;
-            this.size++;
-        }
-    }
     public String addByIndex(Line data, int index) {
         Node<Line> newNode = new Node<>(data);
         if (this.firstNode == null || this.firstNode.getData().getId() > index) {
