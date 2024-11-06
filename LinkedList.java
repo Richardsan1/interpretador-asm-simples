@@ -28,23 +28,31 @@ public class LinkedList{
             this.size++;
         }
     }
-    public String addByIndex(Line data, int index){
+    public String addByIndex(Line data, int index) {
         Node<Line> dummy = this.firstNode;
-        for(int i = 0; i <= size; i++){
-            if(dummy == null || dummy.getNext() == null){
-                add(data);
-                return "Nova linha adicionada";
-            }
-            else if (dummy.getNext().getData().getId() == index) {
+
+        if (dummy == null) {
+            add(data);
+            return "Nova linha adicionada";
+        } else if (this.firstNode.getData().getId() == index) {
+            Node<Line> newNode = new Node<>(data);
+            newNode.setNext(this.firstNode.getNext());
+            this.firstNode = newNode;
+            return "Linha alterada";
+        }
+
+        while (dummy.getNext() != null) {
+            if (dummy.getNext().getData().getId() == index) {
                 Node<Line> newNode = new Node<>(data);
                 newNode.setNext(dummy.getNext().getNext());
                 dummy.setNext(newNode);
                 return "Linha alterada";
             }
-
             dummy = dummy.getNext();
         }
-        return "Error";
+
+        add(data);
+        return "Nova linha adicionada";
     }
 
     public void removeByIndex(int index){
@@ -71,7 +79,12 @@ public class LinkedList{
     StringBuilder sb = new StringBuilder();
     Node<Line> current = this.firstNode;
     while (current != null) {
-        sb.append(current.getData());
+        sb.append("{linha: ");
+        sb.append(current.getData().getId());
+        sb.append(", instrucao: ");
+        sb.append(current.getData().getInstruction());
+        sb.append("}");
+
         if (current.getNext() != null) {
             sb.append(" -> ");
         }
