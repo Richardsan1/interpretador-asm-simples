@@ -21,6 +21,9 @@ public class Main {
                 case "exit" ->{
                     break principal;
                 }
+                case "show" ->{
+                    System.out.println(lines.toString());
+                }
                 default -> {
                     System.out.println("Invalid command");
                 }

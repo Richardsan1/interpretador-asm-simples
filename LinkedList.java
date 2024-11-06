@@ -16,7 +16,7 @@ public class LinkedList{
         return this.firstNode;
     }
 
-    public void add(Line data){
+    private void add(Line data){
         if(this.firstNode == null){
             this.firstNode = new Node<>(data);
             this.lastNode = this.firstNode;
@@ -29,29 +29,32 @@ public class LinkedList{
         }
     }
     public String addByIndex(Line data, int index) {
-        Node<Line> dummy = this.firstNode;
-
-        if (dummy == null) {
-            add(data);
+        Node<Line> newNode = new Node<>(data);
+        if (this.firstNode == null || this.firstNode.getData().getId() > index) {
+            newNode.setNext(this.firstNode);
+            this.firstNode = newNode;
             return "Nova linha adicionada";
         } else if (this.firstNode.getData().getId() == index) {
-            Node<Line> newNode = new Node<>(data);
             newNode.setNext(this.firstNode.getNext());
             this.firstNode = newNode;
             return "Linha alterada";
         }
 
+        Node<Line> dummy = this.firstNode;
         while (dummy.getNext() != null) {
             if (dummy.getNext().getData().getId() == index) {
-                Node<Line> newNode = new Node<>(data);
                 newNode.setNext(dummy.getNext().getNext());
                 dummy.setNext(newNode);
                 return "Linha alterada";
+            } else if (dummy.getNext().getData().getId() > index) {
+                newNode.setNext(dummy.getNext());
+                dummy.setNext(newNode);
+                return "Nova linha adicionada";
             }
             dummy = dummy.getNext();
         }
 
-        add(data);
+        dummy.setNext(newNode);
         return "Nova linha adicionada";
     }
 
