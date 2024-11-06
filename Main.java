@@ -16,7 +16,7 @@ public class Main {
                     System.out.println("todo: implement load");
                 }
                 case "ins" -> {
-                    repl.validate(String.join(" ", Arrays.copyOfRange(input, 1, input.length)));
+                    repl.validateNWrite(String.join(" ", Arrays.copyOfRange(input, 1, input.length)));
                 }
                 case "exit" ->{
                     break principal;
