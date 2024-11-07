@@ -1,16 +1,11 @@
 // não sei se vai ser necessário essa class, ou se ela está pronta, mas vai que
 public class LinkedList{
-    private int size;
     private Node<Line> firstNode;
 
     public LinkedList(){
-        this.size = 0;
         this.firstNode = null;
     }
 
-    public int getSize(){
-        return this.size;
-    }
     public Node<Line> getFirstNode(){
         return this.firstNode;
     }
@@ -31,7 +26,6 @@ public class LinkedList{
         if (this.firstNode == null || this.firstNode.getData().getId() > index) {
             newNode.setNext(this.firstNode);
             this.firstNode = newNode;
-            this.size++;
             return "Nova linha adicionada";
         } else if (this.firstNode.getData().getId() == index) {
             newNode.setNext(this.firstNode.getNext());
@@ -48,34 +42,35 @@ public class LinkedList{
             } else if (dummy.getNext().getData().getId() > index) {
                 newNode.setNext(dummy.getNext());
                 dummy.setNext(newNode);
-                this.size++;
                 return "Nova linha adicionada";
             }
             dummy = dummy.getNext();
         }
 
         dummy.setNext(newNode);
-        this.size++;
         return "Nova linha adicionada";
     }
 
     public void removeByIndex(int index){
-        // index starts at 0
-        if(index >= size || index < 0) return;
-        if(index == 0){
-            this.firstNode = this.firstNode.getNext();
+        Node<Line> dummy = this.firstNode;
+        if(dummy == null) return;
+        if(dummy.getData().getId() == index){
+            this.firstNode = dummy.getNext();
             return;
         }
-        
-        Node<Line> dummy = this.firstNode;
-        for(int i = 0; i < index-1; i++){
+
+        while(dummy != null){
+            if(dummy.getNext() == null || dummy.getNext().getData().getId() > index){
+                break;
+            }
+            if (dummy.getNext().getData().getId() == index) {
+                dummy.setNext(dummy.getNext().getNext());
+                break;
+            } 
+
             dummy = dummy.getNext();
         }
-        dummy.setNext(dummy.getNext().getNext());
-        this.size--;
-    }
-    public void removeByLine(int index){
-        // todo: implement
+
     }
 
     @Override

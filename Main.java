@@ -21,6 +21,23 @@ public class Main {
                 case "run" -> {
                     repl.run();
                 }
+                case "del" -> {
+                    
+                switch (input.length) {
+                    case 2 -> {
+                        lines.removeByIndex(Integer.parseInt(input[1]));
+                    }
+                    case 3 -> {
+                        int start = Integer.parseInt(input[1]);
+
+                        while(start <= Integer.parseInt(input[2])){
+                            lines.removeByIndex(start);
+                            start++;
+                        }
+                    }
+                    default -> System.err.println("Error: ");
+                }
+                }
                 case "exit" ->{
                     break principal;
                 }
