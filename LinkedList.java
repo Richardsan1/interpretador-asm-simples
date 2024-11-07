@@ -14,12 +14,24 @@ public class LinkedList{
     public Node<Line> getFirstNode(){
         return this.firstNode;
     }
+    public Node<Line> getNodeByIndex(int index){
+        Node<Line> dummy = this.firstNode;
+        
+        while(dummy != null){
+            if(dummy.getData().getId() == index){
+                break;
+            }
+            dummy = dummy.getNext();
+        }
+        return dummy;
+    }
 
     public String addByIndex(Line data, int index) {
         Node<Line> newNode = new Node<>(data);
         if (this.firstNode == null || this.firstNode.getData().getId() > index) {
             newNode.setNext(this.firstNode);
             this.firstNode = newNode;
+            this.size++;
             return "Nova linha adicionada";
         } else if (this.firstNode.getData().getId() == index) {
             newNode.setNext(this.firstNode.getNext());
@@ -36,12 +48,14 @@ public class LinkedList{
             } else if (dummy.getNext().getData().getId() > index) {
                 newNode.setNext(dummy.getNext());
                 dummy.setNext(newNode);
+                this.size++;
                 return "Nova linha adicionada";
             }
             dummy = dummy.getNext();
         }
 
         dummy.setNext(newNode);
+        this.size++;
         return "Nova linha adicionada";
     }
 

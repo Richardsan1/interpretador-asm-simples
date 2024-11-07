@@ -45,8 +45,15 @@ public class REPL{
             return;
         }
         Node<Line> dummy = this.lines.getFirstNode();
-        for (int i = 0; i < this.lines.getSize(); i++){
+       while(dummy != null){
             Line line = dummy.getData();
+            if(line.getInstruction().equals("jnz")){
+                if(this.registers[line.getVars()[0].charAt(0)-97]!= 0){
+                    System.out.println("foi para a linha: "+ this.lines.getNodeByIndex(Integer.parseInt(line.getVars()[1])).getData().getId());
+                    dummy = this.lines.getNodeByIndex(Integer.parseInt(line.getVars()[1]));
+                    continue;
+                }
+            }
             if (selectInstruction(line.getInstruction(), line.getVars()[0], line.getVars()[1], line.getId())){
                 break;
             }
@@ -79,7 +86,7 @@ public class REPL{
                 div(x,y);
             }
             case "jnz" ->{
-                jnz(x,y);
+                return false;
             }
             case "out" ->{
                 out(x);
@@ -119,9 +126,6 @@ public class REPL{
     private void div(String x, String y){
         this.registers[x.charAt(0)-97] /= this.registers[y.charAt(0)-97];
         System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
-    }
-    private void jnz(String x, String y){
-        System.out.println("todo: implement jnz");
     }
     private void out(String x){
         System.out.println(this.registers[x.charAt(0)-97]);
