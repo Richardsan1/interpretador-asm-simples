@@ -20,4 +20,9 @@ public class Line{
     public String[] getVars(){
         return this.vars;
     }
+
+    @Override
+    public String toString(){
+        return this.id + " " + this.instruction + " " + String.join(" ", this.vars)+"\n";
+    }
 }

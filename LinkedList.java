@@ -1,4 +1,6 @@
-// não sei se vai ser necessário essa class, ou se ela está pronta, mas vai que
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class LinkedList{
     private Node<Line> firstNode;
 
@@ -71,6 +73,21 @@ public class LinkedList{
             dummy = dummy.getNext();
         }
 
+    }
+    
+    public void clear(){
+        this.firstNode = null;
+    }
+
+    public void saveToFile(String filepath) throws IOException{
+        FileWriter writer = new FileWriter(filepath);
+        Node<Line> dummy = this.firstNode;
+        
+        while (dummy != null) {
+            writer.write(dummy.getData().toString());
+            dummy = dummy.getNext();
+        }
+        writer.close();
     }
 
     @Override
