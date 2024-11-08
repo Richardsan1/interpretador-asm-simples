@@ -55,7 +55,10 @@ public class LinkedList{
 
     public void removeByIndex(int index){
         Node<Line> dummy = this.firstNode;
-        if(dummy == null) return;
+        if(dummy == null) {
+            System.err.println("Error: Empty file");
+            return;
+        }
         if(dummy.getData().getId() == index){
             this.firstNode = dummy.getNext();
             return;
@@ -63,6 +66,7 @@ public class LinkedList{
 
         while(dummy != null){
             if(dummy.getNext() == null || dummy.getNext().getData().getId() > index){
+                System.err.println("Error: Line "+ index +" not found");
                 break;
             }
             if (dummy.getNext().getData().getId() == index) {

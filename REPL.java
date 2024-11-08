@@ -17,26 +17,57 @@ public class REPL{
             System.err.println("Error: line number must be an integer");
             return;
         }
-        if (words.length == 3 && words[2].matches("[a-z]") ){
-            if(!(words[1].equals("out") || words[1].equals("mov"))){
-                System.err.println("Error: invalid arguments for instruction");
+        if(words[1].equals("inc") || words[1].equals("dec")|| words[1].equals("out")){
+            if(words.length != 3){
+                System.err.println("Error: invalid number of arguments");
                 return;
             }
-            String[] vars = new String[1];
-            vars[0] = words[2];
-            newLine(Integer.parseInt(words[0]), words[1], vars, Integer.parseInt(words[0]));
-        } else if (words.length == 4 && words[2].matches("[a-z]") && words[3].matches("[0-9]+") || words[3].matches("[a-z]")){
-            String[] vars = new String[2];
-            vars[0] = words[2];
-            vars[1] = words[3];
-            newLine(Integer.parseInt(words[0]), words[1], vars, Integer.parseInt(words[0]));
-        } else {
-            System.err.println("Error: no properly formatted instruction");
+            if(!words[2].matches("[a-z]")){
+                System.err.println("Error: invalid register");
+                return;
+            }
+
+            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2]}, Integer.parseInt(words[0]));
+        }
+        else if(words[1].equals("add") || words[1].equals("sub") || words[1].equals("mul") || words[1].equals("div")){
+            if(words.length != 4){
+                System.err.println("Error: invalid number of arguments");
+                return;
+            }
+            if(!words[2].matches("[a-z]")){
+                System.err.println("Error: invalid register");
+                return;
+            }
+            if(!words[3].matches("[a-z]")){
+                System.err.println("Error: invalid register");
+                return;
+            }
+
+            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2], words[3]}, Integer.parseInt(words[0]));
+        }
+        else if(words[1].equals("jnz") || words[1].equals("mov")){
+            if(words.length != 4){
+                System.err.println("Error: invalid number of arguments");
+                return;
+            }
+            if(!words[2].matches("[a-z]")){
+                System.err.println("Error: invalid register");
+                return;
+            }
+            if(!words[3].matches("[0-9]+")){
+                System.err.println("Error: invalid number");
+                return;
+            }
+
+            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2]}, Integer.parseInt(words[0]));
+        }
+        else{
+            System.err.println("Error: non-existing command");
         }
 
     }
 
-    public void newLine(int line, String instruction, String[] vars, int index){
+    private void newLine(int line, String instruction, String[] vars, int index){
         System.out.println(this.lines.addByIndex(new Line(line, instruction, vars), index));
     }
     public void run(){

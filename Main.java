@@ -52,11 +52,15 @@ public class Main {
                         lines.removeByIndex(Integer.parseInt(input[1]));
                     }
                     case 3 -> {
-                        int start = Integer.parseInt(input[1]);
+                        if (lines.getFirstNode() != null) {
+                            int start = Integer.parseInt(input[1]);
 
-                        while(start <= Integer.parseInt(input[2])){
-                            lines.removeByIndex(start);
-                            start++;
+                            while(start <= Integer.parseInt(input[2])){
+                                lines.removeByIndex(start);
+                                start++;
+                            }
+                        } else {
+                            System.err.println("Error: No lines to delete");
                         }
                     }
                     default -> System.err.println("Error: Command not supported");
