@@ -1,6 +1,3 @@
-
-
-
 public class REPL{
     private int[] registers;
     private final LinkedList lines;
@@ -27,7 +24,7 @@ public class REPL{
                 return;
             }
 
-            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2]}, Integer.parseInt(words[0]));
+            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2], ""}, Integer.parseInt(words[0]));
         }
         else if(words[1].equals("add") || words[1].equals("sub") || words[1].equals("mul") || words[1].equals("div")){
             if(words.length != 4){
@@ -59,7 +56,7 @@ public class REPL{
                 return;
             }
 
-            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2]}, Integer.parseInt(words[0]));
+            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2], words[3]}, Integer.parseInt(words[0]));
         }
         else{
             System.err.println("Error: non-existing command");

@@ -31,7 +31,7 @@ public class Main {
                                 lines.addByIndex(new Line(lineNum, line[1], new String[]{line[2], line[3]}), lineNum);
                                 continue;
                             }
-                            lines.addByIndex(new Line(lineNum, line[1], new String[]{line[2]}), lineNum);
+                            lines.addByIndex(new Line(lineNum, line[1], new String[]{line[2], ""}), lineNum);
 
                         }
                         fileScanner.close();
