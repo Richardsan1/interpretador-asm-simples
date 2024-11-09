@@ -46,54 +46,70 @@ public class Main {
                     repl.run();
                 }
                 case "del" -> {
-                    
-                switch (input.length) {
-                    case 2 -> {
-                        lines.removeByIndex(Integer.parseInt(input[1]));
-                    }
-                    case 3 -> {
-                        if (lines.getFirstNode() != null) {
-                            int start = Integer.parseInt(input[1]);
-
-                            while(start <= Integer.parseInt(input[2])){
-                                lines.removeByIndex(start);
-                                start++;
-                            }
-                        } else {
-                            System.err.println("Error: No lines to delete");
+                    switch (input.length) {
+                        case 2 -> {
+                            lines.removeByIndex(Integer.parseInt(input[1]));
                         }
+                        case 3 -> {
+                            if (lines.getFirstNode() != null) {
+                                int start = Integer.parseInt(input[1]);
+
+                                while(start <= Integer.parseInt(input[2])){
+                                    lines.removeByIndex(start);
+                                    start++;
+                                }
+                            } else {
+                                System.err.println("Error: No lines to delete");
+                            }
+                        }
+                        default -> System.err.println("Error: Command not supported");
                     }
-                    default -> System.err.println("Error: Command not supported");
-                }
                 }
                 case "save" -> {
-                switch (input.length) {
-                    case 2 -> {
-                        if(input[1].matches(".*\\.ed1$")){
-                            try {
-                                lines.saveToFile(input[1]);
-                                
-                            } catch (Exception e) {
-                                System.err.println("Error: " + e.getMessage());
-                            }
-                        } else {
-                            System.err.println("Error: File not supported");
-                        }
-                    }
-                    case 1 -> {
-                        if(file == null){
-                            System.err.println("Error: No file loaded");
-                        } else {
-                            try {
-                                lines.saveToFile(file.getName());
-                                
-                            } catch (Exception e) {
-                                System.err.println("Error: " + e.getMessage());
+                    switch (input.length) {
+                        case 2 -> {
+                            if(input[1].matches(".*\\.ed1$")){
+                                try {
+                                    lines.saveToFile(input[1]);
+                                    
+                                } catch (Exception e) {
+                                    System.err.println("Error: " + e.getMessage());
+                                }
+                            } else {
+                                System.err.println("Error: File not supported");
                             }
                         }
+                        case 1 -> {
+                            if(file == null){
+                                System.err.println("Error: No file loaded");
+                            } else {
+                                try {
+                                    lines.saveToFile(file.getName());
+                                    
+                                } catch (Exception e) {
+                                    System.err.println("Error: " + e.getMessage());
+                                }
+                            }
+                        }
+                        default -> System.err.println("Error: Command not supported");
                     }
-                    default -> System.err.println("Error: Command not supported");
                 }
+                case "list" -> {
+                    if (lines.getFirstNode() == null) {
+                        System.out.println("Error: No lines to list");
+                        break;
+                    }
+                    int i = 0;
+                    while(true){
+                        if(lines.getLines(20, i)){
+                            System.out.print("End of file, press enter to continue...");
+                            scanner.nextLine();
+                            break;
+                        }
+                        i += 20;
+                        System.out.print("Press enter to continue...");
+                        scanner.nextLine();
+                    }
                 }
                 case "exit" ->{
                     break principal;

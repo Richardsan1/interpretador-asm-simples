@@ -22,6 +22,18 @@ public class LinkedList{
         }
         return dummy;
     }
+    public Node<Line> getNodeByPos(int index){
+        if(index < 0) return null;
+        if(index == 0) return this.firstNode;
+
+        Node<Line> dummy = this.firstNode;
+        
+        for(int i = 0; i < index; i++){
+            if(dummy == null) return null;
+            dummy = dummy.getNext();
+        }
+        return dummy;
+    }
 
     public String addByIndex(Line data, int index) {
         Node<Line> newNode = new Node<>(data);
@@ -94,6 +106,22 @@ public class LinkedList{
         writer.close();
     }
 
+    public boolean getLines(int chunk, int start){
+        Node<Line> dummy = getNodeByPos(start);
+        int count = 1;
+        while(dummy != null){
+            System.out.print(dummy.getData().getId()+" "+dummy.getData().getInstruction()+ " ");
+            System.out.print(String.join(" ", dummy.getData().getVars()));
+            System.out.println();
+            count++;
+            if(count == chunk){
+                return false;
+            }
+            dummy = dummy.getNext();
+        }
+        return true;
+
+    }
     @Override
     public String toString() {
     StringBuilder sb = new StringBuilder();
