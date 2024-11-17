@@ -23,6 +23,9 @@ public class Line{
 
     @Override
     public String toString(){
-        return this.id + " " + this.instruction + " " + String.join(" ", this.vars)+"\n";
+        if (this.vars[1].equals("")){
+            return this.id + " " + this.instruction + " " + this.vars[0];
+        }
+        return this.id + " " + this.instruction + " " + String.join(" ", this.vars);
     }
 }

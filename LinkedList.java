@@ -100,7 +100,7 @@ public class LinkedList{
         Node<Line> dummy = this.firstNode;
         
         while (dummy != null) {
-            writer.write(dummy.getData().toString());
+            writer.write(dummy.getData().toString()+"\n");
             dummy = dummy.getNext();
         }
         writer.close();

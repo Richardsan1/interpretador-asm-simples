@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 // todo list:
@@ -17,11 +18,31 @@ public class Main {
             switch(input[0].toLowerCase()) {
                 case "load"-> {
                     try {
-                        file = new File(input[1]);
+                        if(file != null){
+                            if(findChanges(lines, file)){
+                                boolean continueLoop = true;
+                                while(continueLoop){
+                                    System.out.print("\nError: Unsaved changes detected, do you want to save before continue? (y/n) ");
+                                    switch (scanner.nextLine().toLowerCase()) {
+                                        case "y" -> {
+                                            lines.saveToFile(file.getAbsolutePath());
+                                            continueLoop = false;
+                                            break;
+                                        }
+                                        case "n" -> {
+                                            continueLoop = false; 
+                                            break;
+                                        }
+                                        default -> System.out.println("Invalid option");
+                                    }
+                                }
+                            }
+                        }
                         if (!input[1].matches(".*\\.ed1$")) {
                             System.out.println("Error: File not supported");
                             break;
                         }
+                        file = new File(input[1]);
                         Scanner fileScanner = new Scanner(file);
                         lines.clear();
                         while (fileScanner.hasNextLine()) {
@@ -35,8 +56,10 @@ public class Main {
 
                         }
                         fileScanner.close();
+                        System.out.println("File loaded successfully");
                     } catch (Exception e) {
                         System.err.println("Error: " + e.getMessage());
+                        file = null;
                     }
                 }
                 case "ins" -> {
@@ -71,7 +94,7 @@ public class Main {
                             if(input[1].matches(".*\\.ed1$")){
                                 try {
                                     lines.saveToFile(input[1]);
-                                    
+                                    System.out.println("File saved successfully");
                                 } catch (Exception e) {
                                     System.err.println("Error: " + e.getMessage());
                                 }
@@ -85,7 +108,7 @@ public class Main {
                             } else {
                                 try {
                                     lines.saveToFile(file.getName());
-                                    
+                                    System.out.println("File saved successfully");
                                 } catch (Exception e) {
                                     System.err.println("Error: " + e.getMessage());
                                 }
@@ -107,11 +130,38 @@ public class Main {
                             break;
                         }
                         i += 20;
-                        System.out.print("Press enter to continue...");
-                        scanner.nextLine();
+                        System.out.print("Press enter to continue or type 'exit' to stop: ");
+                        if (scanner.nextLine().equals("exit")) {
+                            break;
+                        }
                     }
                 }
                 case "exit" ->{
+                    try {
+                        if(file != null){
+                            if(findChanges(lines, file)){
+                                boolean continueLoop = true;
+                                while(continueLoop){
+                                    System.out.print("\nUnsaved changes detected, do you want to save before exit? (y/n) ");
+                                    switch (scanner.nextLine().toLowerCase()) {
+                                        case "y" -> {
+                                            lines.saveToFile(file.getAbsolutePath());
+                                            continueLoop = false; 
+                                            break;
+                                        }
+                                        case "n" -> {
+                                            continueLoop = false; 
+                                            break;
+                                        }
+                                        default -> System.out.println("Invalid option");
+                                    }
+                                }
+                            }
+                        }
+                        
+                    } catch (Exception e) {
+                        System.err.println("Error: " + e.getMessage());
+                    }
                     break principal;
                 }
                 // for dev purposes
@@ -123,6 +173,25 @@ public class Main {
                 }
             }
         }
+    }
+    public static boolean findChanges(LinkedList loaded, File file) throws FileNotFoundException{
+        try (Scanner fileScanner = new Scanner(file)) {
+            Node<Line> dummy = loaded.getFirstNode();
+            while (fileScanner.hasNextLine()) {
+                if(dummy == null){
+                    return true;
+                }
+                String line = fileScanner.nextLine();
+                if(!line.equals(dummy.getData().toString())){
+                    return true;
+                }
+                dummy = dummy.getNext();
+            }
+            if(dummy != null){
+                return true;
+            }
+        }
+        return false;
     }
 }
 
