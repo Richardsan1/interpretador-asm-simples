@@ -1,9 +1,9 @@
 public class REPL{
-    private int[] registers;
+    private Integer[] registers;
     private final LinkedList lines;
     
     public REPL(LinkedList lines){
-        this.registers = new int[26];
+        this.registers = new Integer[26];
         this.lines = lines;
     }
     
@@ -14,52 +14,29 @@ public class REPL{
             System.err.println("Error: line number must be an integer");
             return;
         }
-        if(words[1].equals("inc") || words[1].equals("dec")|| words[1].equals("out")){
-            if(words.length != 3){
-                System.err.println("Error: invalid number of arguments");
-                return;
+        switch (words[1]) {
+            case "inc", "dec", "out" -> {
+                if(words.length != 3){
+                    System.err.println("Error: invalid number of arguments");
+                    return;
+                }   if(!words[2].matches("[a-z]")){
+                    System.err.println("Error: invalid register");
+                    return;
+                }   newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2], ""}, Integer.parseInt(words[0]));
             }
-            if(!words[2].matches("[a-z]")){
-                System.err.println("Error: invalid register");
-                return;
+            case "add", "sub", "mul", "div", "mov", "jnz" -> {
+                if(words.length != 4){
+                    System.err.println("Error: invalid number of arguments");
+                    return;
+                }   if(!words[2].matches("[a-z]")){
+                    System.err.println("Error: invalid register");
+                    return;
+                }   if(!words[3].matches("[a-z]") && !words[3].matches("[0-9]+")){
+                    System.err.println("Error: invalid register");
+                    return;
+                }   newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2], words[3]}, Integer.parseInt(words[0]));
             }
-
-            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2], ""}, Integer.parseInt(words[0]));
-        }
-        else if(words[1].equals("add") || words[1].equals("sub") || words[1].equals("mul") || words[1].equals("div")){
-            if(words.length != 4){
-                System.err.println("Error: invalid number of arguments");
-                return;
-            }
-            if(!words[2].matches("[a-z]")){
-                System.err.println("Error: invalid register");
-                return;
-            }
-            if(!words[3].matches("[a-z]")){
-                System.err.println("Error: invalid register");
-                return;
-            }
-
-            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2], words[3]}, Integer.parseInt(words[0]));
-        }
-        else if(words[1].equals("jnz") || words[1].equals("mov")){
-            if(words.length != 4){
-                System.err.println("Error: invalid number of arguments");
-                return;
-            }
-            if(!words[2].matches("[a-z]")){
-                System.err.println("Error: invalid register");
-                return;
-            }
-            if(!words[3].matches("[0-9]+")){
-                System.err.println("Error: invalid number");
-                return;
-            }
-
-            newLine(Integer.parseInt(words[0]), words[1], new String[]{words[2], words[3]}, Integer.parseInt(words[0]));
-        }
-        else{
-            System.err.println("Error: non-existing command");
+            default -> System.err.println("Error: non-existing command");
         }
 
     }
@@ -83,41 +60,67 @@ public class REPL{
                 }
             }
             if (selectInstruction(line.getInstruction(), line.getVars()[0], line.getVars()[1], line.getId())){
+                System.err.println("Error: invalid register at line " + line.getId());
                 break;
             }
 
             dummy = dummy.getNext();
         }
-        this.registers = new int[26];
+        this.registers = new Integer[26];
     }
     private boolean selectInstruction(String instruction, String x, String y, int line){
+        if(this.registers[x.charAt(0)-97] == null && !instruction.matches("mov")){
+            return true;
+        } else if (!y.equals("") && !y.matches("[0-9]+") && this.registers[y.charAt(0)-97] == null){
+            return true;
+        }
         switch (instruction) {
             case "mov" -> {
-                mov(x,y);
+                if(y.matches("[0-9]+")){
+                    this.registers[x.charAt(0) - 97] = Integer.valueOf(y);
+                } else {
+                    this.registers[x.charAt(0) - 97] = this.registers[y.charAt(0) - 97];
+                }
             }
             case "inc" ->{
-                inc(x);
+                this.registers[x.charAt(0)-97] += 1;
             }
             case "dec" ->{
-                dec(x);
+                this.registers[x.charAt(0)-97] -= 1;
             }
             case "add" ->{
-                add(x,y);
+                if(y.matches("[0-9]+")){
+                    this.registers[x.charAt(0)-97] += Integer.valueOf(y);
+                } else {
+                    this.registers[x.charAt(0)-97] += this.registers[y.charAt(0)-97];
+                }
             }
             case "sub" ->{
-                sub(x,y);
+                if(y.matches("[0-9]+")){
+                    this.registers[x.charAt(0)-97] -= Integer.valueOf(y);
+                } else {
+                    this.registers[x.charAt(0)-97] -= this.registers[y.charAt(0)-97];
+                }
             }
             case "mul" ->{
-                mul(x,y);
+                if(y.matches("[0-9]+")){
+                    this.registers[x.charAt(0)-97] *= Integer.valueOf(y);
+                } else {
+                    this.registers[x.charAt(0)-97] *= this.registers[y.charAt(0)-97];
+                }
             }
             case "div" ->{
-                div(x,y);
+                if(y.matches("[0-9]+")){
+                    this.registers[x.charAt(0)-97] /= Integer.valueOf(y);
+                } else {
+                    this.registers[x.charAt(0)-97] /= this.registers[y.charAt(0)-97];
+                }
             }
             case "jnz" ->{
                 return false;
             }
             case "out" ->{
-                out(x);
+                System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
             }
             default ->{
                 System.err.println("Error: non-existing command at line " + line);
@@ -125,30 +128,5 @@ public class REPL{
             }
         }
         return false;
-    }
-    private void mov(String x, String y){
-        int value = Integer.parseInt(y);
-        this.registers[x.charAt(0) - 97] = value;
-    }
-    private void inc(String x){
-        this.registers[x.charAt(0)-97] += 1;
-    }
-    private void dec(String x){
-        this.registers[x.charAt(0)-97] -= 1;
-    }
-    private void add(String x, String y){
-        this.registers[x.charAt(0)-97] += this.registers[y.charAt(0)-97];
-    }
-    private void sub(String x, String y){
-        this.registers[x.charAt(0)-97] -= this.registers[y.charAt(0)-97];
-    }
-    private void mul(String x, String y){
-        this.registers[x.charAt(0)-97] *= this.registers[y.charAt(0)-97];
-    }
-    private void div(String x, String y){
-        this.registers[x.charAt(0)-97] /= this.registers[y.charAt(0)-97];
-    }
-    private void out(String x){
-        System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
 }

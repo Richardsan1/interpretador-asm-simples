@@ -164,10 +164,6 @@ public class Main {
                     }
                     break principal;
                 }
-                // for dev purposes
-                case "show" ->{
-                    System.out.println(lines.toString());
-                }
                 default -> {
                     System.out.println("Invalid command");
                 }
