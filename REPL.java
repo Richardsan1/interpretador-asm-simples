@@ -129,34 +129,26 @@ public class REPL{
     private void mov(String x, String y){
         int value = Integer.parseInt(y);
         this.registers[x.charAt(0) - 97] = value;
-        System.out.println(x + " = " + value);
     }
     private void inc(String x){
         this.registers[x.charAt(0)-97] += 1;
-        System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
     private void dec(String x){
         this.registers[x.charAt(0)-97] -= 1;
-        System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
     private void add(String x, String y){
         this.registers[x.charAt(0)-97] += this.registers[y.charAt(0)-97];
-        System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
     private void sub(String x, String y){
         this.registers[x.charAt(0)-97] -= this.registers[y.charAt(0)-97];
-        System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
     private void mul(String x, String y){
         this.registers[x.charAt(0)-97] *= this.registers[y.charAt(0)-97];
-        System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
     private void div(String x, String y){
         this.registers[x.charAt(0)-97] /= this.registers[y.charAt(0)-97];
-        System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
     private void out(String x){
-        System.out.println(this.registers[x.charAt(0)-97]);
         System.out.println(x + " = " + this.registers[x.charAt(0)-97]);
     }
 }
